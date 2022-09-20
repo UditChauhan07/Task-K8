@@ -35,5 +35,12 @@ pipeline{
         }
       }
     }
+    stage('Update k8s deployment image'){
+            steps {
+                sh '''
+                kubectl delete po $(kubectl get po -l app=docker-image -o jsonpath='{.items[0].metadata.name}')
+                '''
+            }
+        }
   }
 }
