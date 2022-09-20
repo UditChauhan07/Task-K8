@@ -31,7 +31,7 @@ pipeline{
     stage('Pre Prod..') {
      steps{  
          script {
-             sh ' docker run -it -d -p 9090:9090 --name user localhost:9091/docker-image'
+             sh ' docker run -it -d -p 9090:9090 --name task localhost:9091/docker-image'
         }
       }
     }
