@@ -3,13 +3,13 @@ pipeline{
   environment {
         imageName = "docker-image"
         registryCredentials = "nexus"
-        registry = "35.175.127.209:9091/"
+        registry = "18.212.33.180:9091/"
         dockerImage = ''
     }
   stages{
     stage('checkout'){
       steps{
-         checkout([$class: 'GitSCM', branches: [[name: '**']], extensions: [], userRemoteConfigs: [[credentialsId: 'github', url: 'https://github.com/utsav1313/Task-Kubernets.git']]])
+         checkout([$class: 'GitSCM', branches: [[name: '**']], extensions: [], userRemoteConfigs: [[credentialsId: 'github', url: 'https://github.com/Manisha148/Task-K8.git']]])
       }
     }
      stage('Building image') {
