@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-test-app
+spec:
+  selector:
+    matchLabels:
+      app: flask-test-app
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: flask-test-app
+    spec:
+      containers:
+        - name: manishacontainer
+          image: manishaverma/manishav1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9090
