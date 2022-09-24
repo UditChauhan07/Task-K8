@@ -1,40 +1,34 @@
-pipeline{
-  agent any
-  environment {
-        imageName = "docker-image"
-        registryCredentials = "nexus"
-        registry = "18.212.33.180:9091/"
-        dockerImage = ''
+node {
+    def app
+
+    stage('Clone repository') {
+      
+
+        checkout scm
     }
-  stages{
-    stage('checkout'){
-      steps{
-         checkout([$class: 'GitSCM', branches: [[name: '**']], extensions: [], userRemoteConfigs: [[credentialsId: 'github', url: 'https://github.com/Manisha148/Task-K8.git']]])
-      }
+
+    stage('Build image') {
+  
+       app = docker.build("manishaverma/deployk8")
     }
-     stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build imageName
+
+    stage('Test image') {
+  
+
+        app.inside {
+            sh 'echo "Tests passed"'
         }
-      }
     }
-    stage('Uploading to Nexus') {
-     steps{  
-         script {
-             docker.withRegistry( 'http://'+registry, registryCredentials ) {
-             dockerImage.push('latest')
-          }
+
+    stage('Push image') {
+        
+        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+            app.push("${env.BUILD_NUMBER}")
         }
-      }
-    }
-    stage('Pre Prod..') {
-     steps{  
-         script {
-             sh ' docker run -it -d -p 9090:9090 --name task localhost:9091/docker-image'
-        }
-      }
     }
     
-  }
+    stage('Trigger ManifestUpdate') {
+                echo "triggering updatemanifestjob"
+                build job: 'updatemanifest', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
+        }
 }
