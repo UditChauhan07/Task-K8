@@ -29,7 +29,7 @@ node {
     
     stage('Trigger ManifestUpdate') {
                 echo "triggering updatemanifest"
-                build job: 'deployment.yaml', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
+                build job: 'changemanifest', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
         }
      stage('Clone repository') {
       
