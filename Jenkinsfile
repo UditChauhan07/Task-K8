@@ -29,7 +29,7 @@ node {
     
     stage('Trigger ManifestUpdate') {
                 echo "triggering updatemanifest"
-                build job: 'updatemanifest', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
+                build job: 'kubernetesmanifest', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
         }
      stage('Clone repository') {
       
