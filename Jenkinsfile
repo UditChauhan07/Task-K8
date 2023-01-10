@@ -7,25 +7,21 @@ node {
         checkout scm
     }
 
-    stage('Build image') {
-  
-       app = docker.build("manisha3617/deployrepo")
-    }
-
-    stage('Test image') {
-  
-
-        app.inside {
-            sh 'echo "Tests passed"'
+     stage('Building image') {
+   steps{
+       script {
+          sh 'docker build -t demo .'
+          }
         }
-    }
+      }
 
-    stage('Push image') {
-        
-        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-            app.push("${env.BUILD_NUMBER}")
-        }
-    }
+
+ 	stage('Push') {
+
+		steps {
+			sh 'docker push manisha3617/deployrepo:latest'
+			}
+		}
      stage('Trigger ManifestUpdate') {
                 echo "triggering updatemanifestjob"
                 build job: 'updatemanifest', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
