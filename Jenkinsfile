@@ -12,13 +12,13 @@ node {
        app = docker.build("manishaverma/dockerdemo")
     }
 
-//     stage('Test image') {
+    stage('Test image') {
   
 
-//         app.inside {
-//             sh 'echo "Tests passed"'
-//         }
-//     }
+        app.inside {
+            sh 'echo "Tests passed"'
+        }
+    }
 
     stage('Push image') {
         
