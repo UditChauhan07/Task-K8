@@ -9,7 +9,7 @@ node {
 
     stage('Build image') {
   
-       app = docker.build("manishaverma/dockerdemo")
+       app = docker.build("manishaverma/pipeline")
     }
 
     stage('Test image') {
